@@ -1,0 +1,13 @@
+[package]
+name = "vm_transcript"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+teloxide = { version = "0.12", features = ["macros"] }
+tokio = { version = "1.28", features = ["full"] }
+reqwest = { version = "0.12", features = ["multipart"] }
+serde_json = "1.0"
+dotenv = "0.15"
+envy = "0.4"
+serde = { version = "1.0", features = ["derive"] }
