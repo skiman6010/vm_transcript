@@ -10,6 +10,12 @@ use std::path::Path;
 struct Config {
     bot_token: String,
     asr_url: String,
+    #[serde(default = "default_initial_prompt")]
+    initial_prompt: String,
+}
+
+fn default_initial_prompt() -> String {
+    "Transcribe this audio. Use punctuation and capitalization.".to_string()
 }
 
 #[tokio::main]
@@ -79,8 +85,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 };
                 let file_part = multipart::Part::bytes(file_content)
                     .file_name(file_name.clone());
+                let prompt_part = multipart::Part::text(config.initial_prompt.clone());
                 let form = multipart::Form::new()
-                    .part("audio_file", file_part);
+                    .part("audio_file", file_part)
+                    .part("initial_prompt", prompt_part);
 
                 let response = match client.post(&config.asr_url)
                     .multipart(form)
